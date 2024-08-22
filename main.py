@@ -1,3 +1,4 @@
+
 def main():
     book = "frankenstein.txt"
     book_path = ("books/" + book)
@@ -5,10 +6,8 @@ def main():
     words = word_count(book_contents)
     letters = letter_count(book_contents)
 
-    #test = letter_count(book_contents)
-    #test = word_count(book_contents)
-    test = gen_report(book_path, words, letters)
-    print(test)
+    output = gen_report(book_path, words, letters)
+    print(output)
 
 
 def get_book(book_path):
@@ -34,16 +33,17 @@ def letter_count(book_content):
 
 def gen_report(book_path, word_count, letter_count):
     #takes book data, and prints it in a readable format
+    import collections
     report_letters = ""
+    word_count = str(word_count)
 
-    value_order = list(letter_count.values())
-    value_order.sort(reverse=True)
-
-
-    print(value_order)
-    #for j in letter_count.keys():
-    #    report_letters = report_letters + "\n" + "The " + j + " character was found " + str(letter_count[j]) + " times"
-    #return report_letters
+    #take letter_count and put it in value:key reverse order. return front end string.
+    ordered_letters = collections.OrderedDict(sorted(letter_count.items(), key=lambda x: x[1], reverse=True))
+    for j in ordered_letters.keys():
+        report_letters = report_letters + "\n" + "The " + j + " character was found " + str(letter_count[j]) + " times"
+    
+    final_report = ("--- Begin report of " + book_path + " ---" + "\n" + word_count + " words found in the document" + "\n" + report_letters + "\n" + "--- End report ---" )
+    return final_report
 
 if __name__ == "__main__":
     main()
